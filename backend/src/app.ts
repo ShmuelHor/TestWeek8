@@ -2,8 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDb from "./config/db";
-import http from "http";
+import http, { createServer } from "http";
 import router from "./routes/Router";
+import { initializeSocketServer } from "./socket";
 
 dotenv.config();
 
@@ -16,6 +17,9 @@ connectDb();
 
 app.use(express.json());
 app.use(cors());
+const httpServer = createServer(app);
+const io = initializeSocketServer(httpServer);
+
 
 app.use("/api", router);
 
