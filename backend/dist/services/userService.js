@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.login = void 0;
 exports.CreateObjectUser = CreateObjectUser;
 const UserModel_1 = __importDefault(require("../models/UserModel"));
 const utils_1 = require("../utils/utils");
@@ -19,6 +20,10 @@ const organizations_json_1 = __importDefault(require("../data/organizations.json
 const missiles_json_1 = __importDefault(require("../data/missiles.json"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const uuid_1 = require("uuid");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const Jwt_Secret = process.env.JWT_SECRET;
 function CreateObjectUser(username, password, organization, location) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -76,3 +81,24 @@ function CreateObjectUser(username, password, organization, location) {
         }
     });
 }
+const login = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!username || !password) {
+            throw new Error("Username and password are required");
+        }
+        const userFind = yield (0, utils_1.IfUserExists)(username);
+        if (!userFind.userExists) {
+            throw new Error("One of the details is wrong");
+        }
+        const isPasswordValid = yield bcrypt_1.default.compare(password, userFind.user.password);
+        if (!isPasswordValid) {
+            throw new Error("One of the details is wrong");
+        }
+        const token = jsonwebtoken_1.default.sign({ userId: userFind.user.id }, Jwt_Secret, { expiresIn: "1h" });
+        return { token: token, user: userFind.user };
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.login = login;
