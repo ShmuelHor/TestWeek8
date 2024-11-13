@@ -13,11 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IfUserExists = IfUserExists;
-exports.CreateObjectUser = CreateObjectUser;
 const UserModel_1 = __importDefault(require("../models/UserModel"));
-const uuid_1 = require("uuid");
-const organizations_json_1 = __importDefault(require("../data/organizations.json"));
-const missiles_json_1 = __importDefault(require("../data/missiles.json"));
 function IfUserExists(username) {
     return __awaiter(this, void 0, void 0, function* () {
         const users = yield UserModel_1.default.find();
@@ -28,43 +24,5 @@ function IfUserExists(username) {
         else {
             return { userExists: false, user: null };
         }
-    });
-}
-function CreateObjectUser(username, password, organization, location) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const newUser = new UserModel_1.default({
-            id: (0, uuid_1.v4)(),
-            username,
-            password,
-            organization,
-            resources: [],
-            budget: 0,
-        });
-        if (location) {
-            newUser.location = location;
-        }
-        const resourcesForUser = organizations_json_1.default.find((obj) => obj.name === (location ? `${organization} - ${location}` : organization));
-        if (!resourcesForUser) {
-            throw new Error("Organization not found");
-        }
-        newUser.budget = resourcesForUser.budget;
-        resourcesForUser.resources.forEach((resource) => {
-            const missile = missiles_json_1.default.find(m => m.name === resource.name);
-            if (!missile) {
-                throw new Error("Missile not found");
-            }
-            newUser.resources.push({
-                missile: {
-                    name: missile.name,
-                    description: missile.description,
-                    speed: missile.speed,
-                    intercepts: missile.intercepts,
-                    price: missile.price,
-                },
-                amount: resource.amount,
-            });
-        });
-        //   console.log(resourcesForUser);
-        console.log(newUser.resources[1].missile.intercepts);
     });
 }

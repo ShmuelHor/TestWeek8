@@ -2,8 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDb from "./config/db";
-import http from 'http';
-// import {CreateUser} from "./services/userService"
+import http from "http";
+import router from "./routes/Router";
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ connectDb();
 app.use(express.json());
 app.use(cors());
 
-// CreateUser("aa","12345","IDF","North")
+app.use("/api", router);
 
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -9,7 +9,7 @@ export interface IMissile {
 }
 
 export interface IResources {
-  missile: IMissile;
+  name: string;
   amount: number;
 }
 
@@ -24,66 +24,45 @@ export interface IUser extends Document {
 }
 
 const userSchema: Schema<IUser> = new Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  organization: {
-    type: String,
-    required: true,
-  },
-  location: {
-    type: String,
-    required: false,
-  },
-  resources: [
-    {
-      missile: {
-        type: {
-          name: {
-            type: String,
-            required: true,
-          },
-          description: {
-            type: String,
-            required: true,
-          },
-          speed: {
-            type: Number,
-            required: true,
-          },
-          intercepts: {
-            type: [String],
-            required: true,
-          },
-          price: {
-            type: Number,
-            required: true,
-          },
-        },
-        required: true,
-      },
-      amount: {
-        type: Number,
-        required: true,
-      },
+    id: {
+      type: String,
+      required: true,
+      unique: true,
     },
-  ],
-  budget: {
-    type: Number,
-    required: true,
-  },
-});
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    organization: {
+      type: String,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: false,
+    },
+    resources: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    budget: {
+      type: Number,
+      required: true,
+    },
+  });
 
 const User = mongoose.model<IUser>("User", userSchema);
 

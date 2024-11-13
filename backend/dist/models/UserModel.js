@@ -49,29 +49,8 @@ const userSchema = new mongoose_1.Schema({
     },
     resources: [
         {
-            missile: {
-                type: {
-                    name: {
-                        type: String,
-                        required: true,
-                    },
-                    description: {
-                        type: String,
-                        required: true,
-                    },
-                    speed: {
-                        type: Number,
-                        required: true,
-                    },
-                    intercepts: {
-                        type: [String],
-                        required: true,
-                    },
-                    price: {
-                        type: Number,
-                        required: true,
-                    },
-                },
+            name: {
+                type: String,
                 required: true,
             },
             amount: {
