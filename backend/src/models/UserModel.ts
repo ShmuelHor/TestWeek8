@@ -1,16 +1,16 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface IResources {
-  missile: IMissile[];
-  amount: number;
-}
-
 export interface IMissile {
   name: string;
   description: string;
   speed: number;
   intercepts: string[];
   price: number;
+}
+
+export interface IResources {
+  missile: IMissile;
+  amount: number;
 }
 
 export interface IUser extends Document {
@@ -48,8 +48,8 @@ const userSchema: Schema<IUser> = new Schema({
   },
   resources: [
     {
-      missile: [
-        {
+      missile: {
+        type: {
           name: {
             type: String,
             required: true,
@@ -71,7 +71,8 @@ const userSchema: Schema<IUser> = new Schema({
             required: true,
           },
         },
-      ],
+        required: true,
+      },
       amount: {
         type: Number,
         required: true,

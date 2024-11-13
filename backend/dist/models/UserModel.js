@@ -49,8 +49,8 @@ const userSchema = new mongoose_1.Schema({
     },
     resources: [
         {
-            missile: [
-                {
+            missile: {
+                type: {
                     name: {
                         type: String,
                         required: true,
@@ -72,7 +72,8 @@ const userSchema = new mongoose_1.Schema({
                         required: true,
                     },
                 },
-            ],
+                required: true,
+            },
             amount: {
                 type: Number,
                 required: true,
