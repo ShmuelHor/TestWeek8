@@ -14,7 +14,6 @@ export interface IResources {
 }
 
 export interface IUser extends Document {
-  id: string;
   username: string;
   password: string;
   organization: string;
@@ -24,11 +23,6 @@ export interface IUser extends Document {
 }
 
 const userSchema: Schema<IUser> = new Schema({
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     username: {
       type: String,
       required: true,

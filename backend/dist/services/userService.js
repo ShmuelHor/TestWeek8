@@ -12,14 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = void 0;
+exports.InterceptionOptions = exports.GetMissileData = exports.login = void 0;
 exports.CreateObjectUser = CreateObjectUser;
 const UserModel_1 = __importDefault(require("../models/UserModel"));
 const utils_1 = require("../utils/utils");
 const organizations_json_1 = __importDefault(require("../data/organizations.json"));
 const missiles_json_1 = __importDefault(require("../data/missiles.json"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const uuid_1 = require("uuid");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -43,7 +42,6 @@ function CreateObjectUser(username, password, organization, location) {
             }
             const hashedPassword = yield bcrypt_1.default.hash(password, 10);
             const newUser = new UserModel_1.default({
-                id: (0, uuid_1.v4)(),
                 username,
                 password: hashedPassword,
                 organization,
@@ -94,7 +92,7 @@ const login = (username, password) => __awaiter(void 0, void 0, void 0, function
         if (!isPasswordValid) {
             throw new Error("One of the details is wrong");
         }
-        const token = jsonwebtoken_1.default.sign({ userId: userFind.user.id }, Jwt_Secret, { expiresIn: "1h" });
+        const token = jsonwebtoken_1.default.sign({ userId: userFind.user._id }, Jwt_Secret, { expiresIn: "1h" });
         return { token: token, user: userFind.user };
     }
     catch (err) {
@@ -102,3 +100,38 @@ const login = (username, password) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.login = login;
+const GetMissileData = (idUser) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield UserModel_1.default.findById(idUser);
+        if (!user) {
+            throw new Error("User not found");
+        }
+        const UserMissiles = [];
+        user.resources.forEach((resource) => {
+            UserMissiles.push(missiles_json_1.default.find((m) => m.name === resource.name));
+        });
+        return UserMissiles;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.GetMissileData = GetMissileData;
+const InterceptionOptions = (idUser) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const UserMissiles = yield (0, exports.GetMissileData)(idUser);
+        const options = [];
+        UserMissiles.forEach((m) => {
+            m.intercepts.filter((i) => options.push(i));
+        });
+        if (options.length === 0) {
+            throw new Error("Interception is only for the IDF");
+        }
+        const optionsFiltered = [...new Set(options)];
+        return optionsFiltered;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.InterceptionOptions = InterceptionOptions;

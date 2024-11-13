@@ -3,7 +3,6 @@ import { IfUserExists } from "../utils/utils";
 import organizationsData from "../data/organizations.json";
 import missilesData from "../data/missiles.json";
 import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
@@ -36,7 +35,6 @@ export async function CreateObjectUser(
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser: IUser = new User({
-      id: uuidv4(),
       username,
       password: hashedPassword,
       organization,
@@ -96,7 +94,7 @@ export const login = async (username: string, password: string) => {
       throw new Error("One of the details is wrong");
     }
     const token = jwt.sign(
-      { userId: userFind.user!.id },
+      { userId: userFind.user!._id },
       Jwt_Secret as string,
       { expiresIn: "1h" }
     );
@@ -106,3 +104,36 @@ export const login = async (username: string, password: string) => {
     throw err;
   }
 };
+
+export const GetMissileData = async (idUser: string) => {
+  try {
+    const user = await User.findById(idUser);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const UserMissiles:IMissile[] = [];
+     user.resources.forEach((resource: IResources) => {
+        UserMissiles.push(missilesData.find((m) => m.name === resource.name)!);
+     })
+    return UserMissiles;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export const InterceptionOptions = async (idUser: string) => {
+  try {
+    const UserMissiles = await GetMissileData(idUser);
+    const options:string[] = [];
+    UserMissiles.forEach((m) => {
+      m.intercepts.filter((i) => options.push(i) );
+    });
+    if (options.length === 0) {
+      throw new Error("Interception is only for the IDF");
+    }
+    const optionsFiltered = [...new Set(options)];
+    return optionsFiltered;
+  } catch (err) {
+    throw err;
+  }
+}

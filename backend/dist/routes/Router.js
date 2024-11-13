@@ -8,4 +8,6 @@ const userController_1 = require("../controllers/userController");
 const router = express_1.default.Router();
 router.route('/register').post(userController_1.CreateUserHandler);
 router.route('/login').post(userController_1.LoginHandler);
+router.route('/user/:id').get(userController_1.GetMissileDataHandler);
+router.route('/interception/:id').get(userController_1.InterceptionOptionsHandler);
 exports.default = router;
