@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { UsersState, UserData, UserMissilesData } from "../../../types";
+import { UsersState, UserData } from "../../../types";
 
 const initialState: UsersState = {
   user: null,
@@ -97,7 +97,7 @@ export const fetchLoginUser = createAsyncThunk<
 });
 
 export const fetchMissiles = createAsyncThunk<
-UserMissilesData,
+UserData,
   null,
   { rejectValue: string }
 >("users/fetchMissiles", async (_, thunkAPI) => {
@@ -115,7 +115,7 @@ UserMissilesData,
     if (!response.ok)
       throw new Error(`Network response was not ok: ${response.statusText}`);
 
-    const data: UserMissilesData = await response.json();
+    const data: UserData = await response.json();
     if (!data || !data.data)
       throw new Error(data?.message || "Failed to fetch missiles data");
 
@@ -128,10 +128,10 @@ UserMissilesData,
 });
 
 export const fetchSubtractAmmunition = createAsyncThunk<
-UserData,
-  { missileName: string, location:string },
-  { rejectValue: string }>
-("users/fetchSubtractAmmunition", async (ammunition, thunkAPI) => {
+  UserData,
+  { missileName: string; location: string },
+  { rejectValue: string }
+>("users/fetchSubtractAmmunition", async (ammunition, thunkAPI) => {
   try {
     const token = localStorage.getItem("Token");
     if (!token) throw new Error("No token found");
@@ -146,7 +146,10 @@ UserData,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ missileName: ammunition.missileName,location:ammunition.location }),
+        body: JSON.stringify({
+          missileName: ammunition.missileName,
+          location: ammunition.location,
+        }),
       }
     );
     if (!response.ok)
@@ -155,7 +158,6 @@ UserData,
     const data: UserData = await response.json();
     if (!data || !data.data)
       throw new Error(data?.message || "Failed to fetch ammunition data");
-
     return data;
   } catch (error: unknown) {
     return thunkAPI.rejectWithValue(
@@ -222,7 +224,7 @@ const usersSlice = createSlice({
       })
       .addCase(fetchMissiles.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.UserMissiles = action.payload;
+        state.user = action.payload;
       })
       .addCase(fetchMissiles.rejected, (state, action) => {
         state.status = "failed";
@@ -239,7 +241,7 @@ const usersSlice = createSlice({
       .addCase(fetchSubtractAmmunition.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload || "Login failed";
-      })
+      });
   },
 });
 

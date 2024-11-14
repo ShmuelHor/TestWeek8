@@ -58,9 +58,7 @@ const Register = () => {
     handleReset();
     navigate("/");
   }
-  const aaa = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(isFDI);
-  };
+
 
   return (
     <div className="container">

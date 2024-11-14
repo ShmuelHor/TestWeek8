@@ -10,6 +10,6 @@ const router = express_1.default.Router();
 router.route('/register').post(userController_1.CreateUserHandler);
 router.route('/login').post(userController_1.LoginHandler);
 router.route('/Missiles/:id').get(MissilesController_1.GetMissileDataHandler);
-router.route('/interception/:id').get(MissilesController_1.InterceptionOptionsHandler);
-router.route('/SubtractAmmunition/:id').post(MissilesController_1.SubtractAmmunitionHandler);
+// router.route('/interception/:id').get(InterceptionOptionsHandler);
+// router.route('/SubtractAmmunition/:id').post(SubtractAmmunitionHandler);
 exports.default = router;

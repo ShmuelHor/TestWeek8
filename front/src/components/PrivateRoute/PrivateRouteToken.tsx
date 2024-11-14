@@ -23,7 +23,7 @@ const PrivateRouteToken: React.FC<PrivateRouteTokenProps> = ({ children }) => {
       } else {
         navigate("/");
       }
-    }, 1500);
+    }, 1000);
   }, []);
 
   return <>{isLoading ? <h1>Loading...</h1> : children}</>;
