@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InterceptionOptionsHandler = exports.GetMissileDataHandler = exports.LoginHandler = exports.CreateUserHandler = void 0;
+exports.LoginHandler = exports.CreateUserHandler = void 0;
 const userService_1 = require("../services/userService");
 const CreateUserHandler = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -41,25 +41,3 @@ const LoginHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.LoginHandler = LoginHandler;
-const GetMissileDataHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const UserMissiles = yield (0, userService_1.GetMissileData)(id);
-        res.status(200).json({ message: 'missiles found', data: UserMissiles, success: true });
-    }
-    catch (error) {
-        res.status(400).json({ message: error.message, success: false });
-    }
-});
-exports.GetMissileDataHandler = GetMissileDataHandler;
-const InterceptionOptionsHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const options = yield (0, userService_1.InterceptionOptions)(id);
-        res.status(200).json({ message: 'Interception options set', data: options, success: true });
-    }
-    catch (error) {
-        res.status(400).json({ message: error.message, success: false });
-    }
-});
-exports.InterceptionOptionsHandler = InterceptionOptionsHandler;

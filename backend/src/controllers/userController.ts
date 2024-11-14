@@ -1,5 +1,5 @@
 import e, { Request, Response ,NextFunction} from 'express';
-import { CreateObjectUser, login,GetMissileData, InterceptionOptions } from '../services/userService';
+import { CreateObjectUser, login } from '../services/userService';
 
 
 export const CreateUserHandler = async(req: Request, res: Response, next: NextFunction) => {
@@ -27,26 +27,6 @@ export const LoginHandler = async (req: Request, res: Response): Promise<void> =
             sameSite: 'none',
           });
         res.status(200).json({ message: 'Login successful',data: user, token: token, success: true });
-    } catch (error: any) {
-        res.status(400).json({ message: error.message, success: false });
-    }
-}
-
-export const GetMissileDataHandler = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { id } = req.params;
-        const UserMissiles = await GetMissileData(id);
-        res.status(200).json({ message: 'missiles found', data: UserMissiles, success: true });
-    } catch (error: any) {
-        res.status(400).json({ message: error.message, success: false });
-    }
-}
-
-export const InterceptionOptionsHandler = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { id } = req.params;
-        const options = await InterceptionOptions(id);
-        res.status(200).json({ message: 'Interception options set',data: options, success: true });
     } catch (error: any) {
         res.status(400).json({ message: error.message, success: false });
     }

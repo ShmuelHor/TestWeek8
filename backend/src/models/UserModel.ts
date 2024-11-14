@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface IMissile {
+export interface Missile {
   name: string;
   description: string;
   speed: number;

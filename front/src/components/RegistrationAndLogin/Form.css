@@ -1,0 +1,121 @@
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+  
+.form {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.26);
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    text-align: left;
+}
+  
+.form h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+  
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+  
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+  
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f7f6f6;
+    box-sizing: border-box;
+}
+  
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #4a90e2;
+    background-color: #4a91e215;
+    outline: none;
+}
+  
+.form-group select {
+    appearance: none;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path d="M0 0l5 5 5-5z" fill="%23666" /></svg>') no-repeat right;
+    background-size: 10px 6px;
+    background-position-x: 100%;
+}
+  
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+.form-actions button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+}
+  
+.form-actions button[type="submit"]:hover {
+    background-color: #45A049;
+}
+  
+.form-actions button[type="reset"] {
+    background-color: #F44336;
+    color: white;
+}
+  
+.form-actions button[type="reset"]:hover {
+    background-color: #D32F2F;
+}
+  
+.form-actions .login-button,
+.form-actions .register-button {
+    background-color: #1976D2;
+    color: white;
+}
+  
+.form-actions .login-button:hover,
+.form-actions .register-button:hover {
+    background-color: #1565C0;
+}
+  
+.form-group select {
+    background-color: #f7f6f6;
+    padding-right: 35px;
+    text-indent: 5px;
+}
+
+.form-group select:focus {
+    background-color: #4a91e215;
+    padding-right: 35px;
+    text-indent: 5px;
+}

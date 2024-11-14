@@ -5,9 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const userController_1 = require("../controllers/userController");
+const MissilesController_1 = require("../controllers/MissilesController");
 const router = express_1.default.Router();
 router.route('/register').post(userController_1.CreateUserHandler);
 router.route('/login').post(userController_1.LoginHandler);
-router.route('/user/:id').get(userController_1.GetMissileDataHandler);
-router.route('/interception/:id').get(userController_1.InterceptionOptionsHandler);
+router.route('/Missiles/:id').get(MissilesController_1.GetMissileDataHandler);
+router.route('/interception/:id').get(MissilesController_1.InterceptionOptionsHandler);
+router.route('/SubtractAmmunition/:id').post(MissilesController_1.SubtractAmmunitionHandler);
 exports.default = router;

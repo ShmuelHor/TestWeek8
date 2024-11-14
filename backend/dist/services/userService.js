@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InterceptionOptions = exports.GetMissileData = exports.login = void 0;
+exports.login = void 0;
 exports.CreateObjectUser = CreateObjectUser;
 const UserModel_1 = __importDefault(require("../models/UserModel"));
 const utils_1 = require("../utils/utils");
@@ -36,8 +36,8 @@ function CreateObjectUser(username, password, organization, location) {
                 organization !== "Houthis") {
                 throw new Error("Organization not exist");
             }
-            const { userExists } = yield (0, utils_1.IfUserExists)(username);
-            if (userExists) {
+            const userExists = yield (0, utils_1.IfUserExists)(username);
+            if (userExists.userExists) {
                 throw new Error("User already exists");
             }
             const hashedPassword = yield bcrypt_1.default.hash(password, 10);
@@ -100,38 +100,3 @@ const login = (username, password) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.login = login;
-const GetMissileData = (idUser) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const user = yield UserModel_1.default.findById(idUser);
-        if (!user) {
-            throw new Error("User not found");
-        }
-        const UserMissiles = [];
-        user.resources.forEach((resource) => {
-            UserMissiles.push(missiles_json_1.default.find((m) => m.name === resource.name));
-        });
-        return UserMissiles;
-    }
-    catch (err) {
-        throw err;
-    }
-});
-exports.GetMissileData = GetMissileData;
-const InterceptionOptions = (idUser) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const UserMissiles = yield (0, exports.GetMissileData)(idUser);
-        const options = [];
-        UserMissiles.forEach((m) => {
-            m.intercepts.filter((i) => options.push(i));
-        });
-        if (options.length === 0) {
-            throw new Error("Interception is only for the IDF");
-        }
-        const optionsFiltered = [...new Set(options)];
-        return optionsFiltered;
-    }
-    catch (err) {
-        throw err;
-    }
-});
-exports.InterceptionOptions = InterceptionOptions;

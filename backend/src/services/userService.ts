@@ -1,4 +1,4 @@
-import User, { IUser, IResources, IMissile } from "../models/UserModel";
+import User, { IUser, IResources, Missile } from "../models/UserModel";
 import { IfUserExists } from "../utils/utils";
 import organizationsData from "../data/organizations.json";
 import missilesData from "../data/missiles.json";
@@ -28,8 +28,8 @@ export async function CreateObjectUser(
     ) {
       throw new Error("Organization not exist");
     }
-    const { userExists } = await IfUserExists(username);
-    if (userExists) {
+    const userExists = await IfUserExists(username);
+    if (userExists.userExists) {
       throw new Error("User already exists");
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -105,35 +105,4 @@ export const login = async (username: string, password: string) => {
   }
 };
 
-export const GetMissileData = async (idUser: string) => {
-  try {
-    const user = await User.findById(idUser);
-    if (!user) {
-      throw new Error("User not found");
-    }
-    const UserMissiles:IMissile[] = [];
-     user.resources.forEach((resource: IResources) => {
-        UserMissiles.push(missilesData.find((m) => m.name === resource.name)!);
-     })
-    return UserMissiles;
-  } catch (err) {
-    throw err;
-  }
-}
 
-export const InterceptionOptions = async (idUser: string) => {
-  try {
-    const UserMissiles = await GetMissileData(idUser);
-    const options:string[] = [];
-    UserMissiles.forEach((m) => {
-      m.intercepts.filter((i) => options.push(i) );
-    });
-    if (options.length === 0) {
-      throw new Error("Interception is only for the IDF");
-    }
-    const optionsFiltered = [...new Set(options)];
-    return optionsFiltered;
-  } catch (err) {
-    throw err;
-  }
-}
