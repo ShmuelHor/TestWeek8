@@ -38,7 +38,6 @@ const SubtractAmmunitionHandler = (req, res) => __awaiter(void 0, void 0, void 0
         const { missileName, location } = req.body;
         const { id } = req.params;
         const user = yield (0, MissilesService_1.SubtractAmmunition)(id, missileName, location);
-        console.log(user);
         res.status(200).json({ message: 'Ammunition subtracted', data: user, success: true });
     }
     catch (error) {

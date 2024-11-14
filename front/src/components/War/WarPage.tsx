@@ -1,12 +1,12 @@
-import React from 'react'
-import AvalilableAmmo from './AvalilableAmmo'
+// import React from 'react'
+// import AvalilableAmmo from './AvalilableAmmo'
 
-const WarPage = () => {
-  return (
-    <div>
-        <AvalilableAmmo/>
-    </div>
-  )
-}
+// const WarPage = () => {
+//   return (
+//     <div>
+//         <AvalilableAmmo/>
+//     </div>
+//   )
+// }
 
-export default WarPage
+// export default WarPage

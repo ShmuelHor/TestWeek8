@@ -11,6 +11,7 @@ const AvalilableAmmo = () => {
   const [location, setLocation] = useState<string>("");
   const dataUsers = useSelector(selectUser);
   const dispatch = useAppDispatch();
+  
 
   useEffect(() => {
     const a = async () => {
@@ -34,7 +35,8 @@ const AvalilableAmmo = () => {
     console.log(location);
   };
   return (
-    <div>
+    <div style={{backgroundColor: "red"}}>
+        <h3>organization: {dataUsers?.data.organization}</h3>
       <label>Location:</label>
       {dataUsers?.data.organization !== "IDF" && (
         <select
